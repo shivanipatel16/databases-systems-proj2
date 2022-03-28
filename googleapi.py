@@ -3,6 +3,7 @@ from googleapiclient.discovery import build
 
 def valid_args(args):
     """
+    TODO: documentation
     returns whether args are valid and can process a call to the search engine
     checks for:
         (1) number of command line args
@@ -11,14 +12,18 @@ def valid_args(args):
     :param args: command line args as a tuple of strings
     :return: boolean True or False on whether the args given are valid or not
     """
-    if len(args) != 4:
+
+    # python3 project2.py <google api key> <google engine id> <r> <t> <q> <k>
+    if len(args) != 6:
         return False
-    key, engine_id, target_precision, raw_query = args
+
+    key, engine_id, relation, target_precision, query, k = args
 
     try:
-        if float(target_precision) > 1 or float(target_precision) < 0:
-            return False
-        r = try_connection(raw_query, key, engine_id)
+        # TODO: more error checking the arguments
+        # if float(target_precision) > 1 or float(target_precision) < 0:
+        #     return False
+        r = try_connection(query, key, engine_id)
         return True
     except:
         return False
@@ -40,15 +45,14 @@ def try_connection(query, key, engine_id):
     ).execute()
 
 
-def get_results(query, target_precision, key, engine_id):
+def get_url_results(query, key, engine_id):
     """
     makes a call to the Google search engine api to find top 10 results for given query
     if non-html file, file is not returned in user_res[0]
     :param key: Google Custom Search Engine JSON API Key
     :param engine_id: Engine ID
-    :param target_precision: float value between 0 and 1
     :param query: string that contains 1 or more words
-    :return: tuple of results as a list of documents where which document is a dictionary with title, url, and summary and number of results
+    :return: list of urls
     """
     service = build("customsearch", "v1",
                     developerKey=key)
@@ -58,22 +62,16 @@ def get_results(query, target_precision, key, engine_id):
         cx=engine_id,
     ).execute()
 
-    print("Query:", query)
-    print("Precision:", target_precision)
-
     if "items" not in res:
         return None, 0
 
-    num_of_results = len(list(res["items"]))
 
-    user_res = list()
+    results = list()
     for result in res["items"]:
-        if "fileFormat" in result:
+        if "fileFormat" in result: # TODO: should we ignore pdf in this one too? or not?
             continue
 
-        document = {"title": result["title"],
-                    "url": result["formattedUrl"],
-                    "summary": result["snippet"]}
-        user_res.append(document)
+        results.append(result["formattedUrl"])
 
-    return user_res, num_of_results
+    print(results)
+    return results

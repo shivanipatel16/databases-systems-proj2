@@ -1,13 +1,10 @@
-import spacy
-
-spacy2bert = { 
+spacy2bert = {
         "ORG": "ORGANIZATION",
         "PERSON": "PERSON",
         "GPE": "LOCATION", 
         "LOC": "LOCATION",
         "DATE": "DATE"
         }
-
 bert2spacy = {
         "ORGANIZATION": "ORG",
         "PERSON": "PERSON",
@@ -17,7 +14,6 @@ bert2spacy = {
         "STATE_OR_PROVINCE": "GPE",
         "DATE": "DATE"
         }
-
 
 def get_entities(sentence, entities_of_interest):
     return [(e.text, spacy2bert[e.label_]) for e in sentence.ents if e.label_ in spacy2bert]
