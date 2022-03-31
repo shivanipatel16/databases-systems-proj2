@@ -70,6 +70,6 @@ def get_url_results(query, key, engine_id):
         if "fileFormat" in result:
             continue
 
-        results.append(result["formattedUrl"])
+        results.append(result["link"])
 
     return results

@@ -47,8 +47,6 @@ def extract_relations(doc, spanbert, desired_relation, entities_of_interest=None
     sentences_extracted = set()
     for sentence in doc.sents:
         entity_pairs = create_entity_pairs(sentence, entities_of_interest)
-
-        # TODO: we should ignore all entity pairs that do not work for the relation we care about
         examples = []
         for ep in entity_pairs:
             if ep[1][1] in subjects_of_interest and ep[2][1] in objects_of_interest:

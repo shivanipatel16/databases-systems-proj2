@@ -97,6 +97,7 @@ def main():
             query = new_query
             if new_query == None:
                 print("ISE has stalled before retrieving k high-confidence tuples.")
+                print("Total # of iterations = {}".format(i))
                 query = None
 
         else:
