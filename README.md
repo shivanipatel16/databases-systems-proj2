@@ -24,20 +24,23 @@ pip3 install tabulate
 A clear description of the internal design of your project, explaining the general structure of your code (i.e., what its main high-level components are and what they do), as well as acknowledging and describing all external libraries that you use in your code
 
 
-**External libraries: **
+**External libraries:**
 requests
 from bs4 import BeautifulSoup
 re
 
 
-**Description of Step 3: **
-To retrieve the URLs, we utilized our project 1 code. We created a set of urls to keep track of the urls we already have seen. We skipped already-seen URLs by checking if it was in the set already.
+**Description of Step 3:**
+1) Retrieving the URLS: 
+ - To retrieve the URLs, we utilized our project 1 code. We created a set of urls to keep track of the urls we already have seen. We skipped already-seen URLs by checking if it was in the set already.
 
-To extract the actual plain text, we had a function called get_content in textprocessing.py. In get_content, we utilized the library beautiful soup and used a html parser as a feature. Beautiful soup pulls data out of HTML files. To get more relevant content for our program, we iterated through the data we extracted from Beautiful Soup and took out some tags such the style, script, noscript, sup, img, and cite tags. Thus, we were essentially left with the body of the html page. We also only kept alphanumeric values and took out multiple whitespaces. Lastly, we truncated the text to 20,000 characters by slicing the cleaned text. 
+2) Getting Content: 
+- To extract the actual plain text, we had a function called get_content in textprocessing.py. In get_content, we utilized the library beautiful soup and used a html parser as a feature. Beautiful soup pulls data out of HTML files. To get more relevant content for our program, we iterated through the data we extracted from Beautiful Soup and took out some tags such the style, script, noscript, sup, img, and cite tags. Thus, we were essentially left with the body of the html page. We also only kept alphanumeric values and took out multiple whitespaces. Lastly, we truncated the text to 20,000 characters by slicing the cleaned text. 
 
-We utilized the spacy library to split the now cleaned text into sentences and extracted named entities. An entity of interest list was created which corresponded to the relation it represented. For example, if relation was 1, the list of entities of interest were "PERSON" and "ORGANIZATION". The desired relation for this relation was "per:schools_attended". We applied this logic with the remaining relations from relation 1 to 4. 
-
-
+3) Extracting Entities:
+ - ExtrWe utilized the spacy library to split the now cleaned text into sentences and extracted named entities. An entity of interest list was created which corresponded to the relation it represented. For example, if relation was 1, the list of entities of interest were "PERSON" and "ORGANIZATION". The desired relation for this relation was "per:schools_attended". We applied this logic with the remaining relations from relation 1 to 
+ 
+NEED TO WORK ON THIS PART STILL
 Use the sentences and named entity pairs as input to SpanBERT to predict the corresponding relations, and extract all instances of the relation specified by input parameter r. See below for details on how to perform this step.
 
 Identify the tuples that have an associated extraction confidence of at least t and add them to set X.
