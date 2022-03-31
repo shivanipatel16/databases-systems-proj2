@@ -12,7 +12,7 @@ Zip file with:
 - textprocessing.py
 - download_finetuned.sh
 
-**How to run the program: **
+**How to run the program:**
 Commands to run: 
 sudo apt update 
 sudo apt install 
@@ -21,13 +21,13 @@ pip3 install beautifulsoup4
 pip3 install tabulate
 
 
-A clear description of the internal design of your project, explaining the general structure of your code (i.e., what its main high-level components are and what they do), as well as acknowledging and describing all external libraries that you use in your code
+**Description of the internal design:**
 
 
 **External libraries:**
-requests
-from bs4 import BeautifulSoup
-re
+- requests
+- from bs4 import BeautifulSoup
+- re
 
 
 **Description of Step 3:**
