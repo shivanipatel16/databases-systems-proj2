@@ -37,7 +37,8 @@ special_tokens = {'SUBJ_START': '[unused1]', 'SUBJ_END': '[unused2]', 'OBJ_START
                   'OBJ=CAUSE_OF_DEATH': '[unused17]', 'OBJ=COUNTRY': '[unused18]', 'OBJ=DURATION': '[unused19]',
                   'OBJ=STATE_OR_PROVINCE': '[unused20]', 'OBJ=LOCATION': '[unused21]',
                   'OBJ=CRIMINAL_CHARGE': '[unused22]', 'OBJ=IDEOLOGY': '[unused23]'}
-
+# TODO:
+special_tokens['SUBJ=LOCATION'] = '[unused24]'
 
 class InputExample(object):
     """A single training/test example for span pair classification."""
@@ -159,7 +160,6 @@ def predict(model, device, eval_dataloader, verbose=True):
         else:
             preds[0] = np.append(
                 preds[0], logits.detach().cpu().numpy(), axis=0)
-    print()
     pred_ids = np.argmax(preds[0], axis=1)
     pred_proba = np.max(softmax(preds[0], axis=1), axis=1)
     return pred_ids, pred_proba

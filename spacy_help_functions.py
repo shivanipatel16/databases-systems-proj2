@@ -20,6 +20,7 @@ bert2spacy = {
 }
 # TODO: you are allowed to modify spacy_help_functions, just make sure to mention any changes that you have made in your README.
 
+#TODO : wrote this
 def load_nlp_model():
     print("Loading necessary libraries; This should take a minute or so ...)")
     spanbert = SpanBERT("./pretrained_spanbert")
@@ -31,44 +32,66 @@ def get_entities(sentence, entities_of_interest):
     return [(e.text, spacy2bert[e.label_]) for e in sentence.ents if e.label_ in spacy2bert]
 
 
-def extract_relations(doc, spanbert, entities_of_interest=None, conf=0.7):
+def extract_relations(doc, spanbert, desired_relation, entities_of_interest=None, subjects_of_interest=None, objects_of_interest=None, conf=0.7):
     num_sentences = len([s for s in doc.sents])
-    print("Total # sentences = {}".format(num_sentences))
+    print("Extracted {} sentences. Processing each sentence one by one to check for presence of right pair of named entity types; if so, will run the second pipeline...".format(num_sentences))
     res = defaultdict(int)
+    k = 0
+    # TODO: read modification in readme
+    if subjects_of_interest == None:
+        subjects_of_interest = entities_of_interest
+    if objects_of_interest == None:
+        objects_of_interest = entities_of_interest
+
+    relations_extracted = 0
+    sentences_extracted = set()
     for sentence in doc.sents:
-        print("\tprocessing sentence: {}".format(sentence))
-        entity_pairs = create_entity_pairs(sentence, entities_of_interest) # TODO: we should ignore all entity pairs that do not work for the relation we care about
+        entity_pairs = create_entity_pairs(sentence, entities_of_interest)
+
+        # TODO: we should ignore all entity pairs that do not work for the relation we care about
         examples = []
         for ep in entity_pairs:
-            examples.append({"tokens": ep[0], "subj": ep[1], "obj": ep[2]})
-            examples.append({"tokens": ep[0], "subj": ep[2], "obj": ep[1]})
+            if ep[1][1] in subjects_of_interest and ep[2][1] in objects_of_interest:
+                examples.append({"tokens": ep[0], "subj": ep[1], "obj": ep[2]})
+            if ep[2][1] in subjects_of_interest and ep[1][1] in objects_of_interest:
+                examples.append({"tokens": ep[0], "subj": ep[2], "obj": ep[1]})
 
-        # TODO
-        if len(examples) == 0:
-            continue
+        if len(examples) != 0:
+            preds = spanbert.predict(examples)
 
+            for ex, pred in list(zip(examples, preds)):
+                relation = pred[0]
 
-        preds = spanbert.predict(examples)
-        for ex, pred in list(zip(examples, preds)):
-            relation = pred[0]
-            if relation == 'no_relation':
-                continue
-            print("\n\t\t=== Extracted Relation ===")
-            print("\t\tTokens: {}".format(ex['tokens']))
-            subj = ex["subj"][0]
-            obj = ex["obj"][0]
-            confidence = pred[1]
-            print("\t\tRelation: {} (Confidence: {:.3f})\nSubject: {}\tObject: {}".format(relation, confidence, subj,
-                                                                                          obj))
-            if confidence > conf:
-                if res[(subj, relation, obj)] < confidence:
-                    res[(subj, relation, obj)] = confidence
-                    print("\t\tAdding to set of extracted relations")
-                else:
-                    print("\t\tDuplicate with lower confidence than existing record. Ignoring this.")
-            else:
-                print("\t\tConfidence is lower than threshold confidence. Ignoring this.")
-            print("\t\t==========")
+                if relation == desired_relation:
+
+                    relations_extracted += 1
+                    sentences_extracted.add(k)
+                    print("\n\t\t=== Extracted Relation ===")
+                    print("\t\tTokens: {}".format(ex['tokens']))
+                    subj = ex["subj"][0]
+                    obj = ex["obj"][0]
+                    confidence = pred[1]
+                    print("\t\tRelation: {} (Confidence: {:.3f})\n\t\tSubject: {}\tObject: {}".format(relation, confidence, subj,
+                                                                                                  obj))
+                    if confidence > conf:
+                        if res[(subj, relation, obj)] < confidence:
+                            res[(subj, relation, obj)] = confidence
+                            print("\t\tAdding to set of extracted relations")
+                        else:
+                            print("\t\tDuplicate with lower confidence than existing record. Ignoring this.")
+                    else:
+                        print("\t\tConfidence is lower than threshold confidence. Ignoring this.")
+                    print("\t\t==========")
+
+        k += 1
+        if k % 5 == 0 and k != 0:
+            print("\tProcessed {}/{} sentences".format(k, num_sentences))
+
+    print("Extracted annotations for {} out of total {} sentences".format(len(sentences_extracted), num_sentences))
+    print("Relations extracted from this website: {} (Overall: {})".format(len(res), relations_extracted))
+    # Extracted annotations for  2  out of total  117  sentences
+	# Relations extracted from this website: 2 (Overall: 3)
+
     return res
 
 
@@ -133,4 +156,5 @@ def create_entity_pairs(sents_doc, entities_of_interest, window_size=40):
                 if e2.start == e2.end:
                     assert x[e2.start - gap] == e2.text, "{}, {}".format(e2_info, x)
                 entity_pairs.append((x, e1_info, e2_info))
+
     return entity_pairs

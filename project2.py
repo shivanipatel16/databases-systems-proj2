@@ -14,6 +14,7 @@ def main():
 
     key, engine_id, relation, target_precision, query, k = args
     target_precision = float(target_precision)
+    relation = int(relation)
 
     print("----")
     print("Parameters:")
@@ -25,15 +26,34 @@ def main():
     print("# of Tuples       =", k)
     print("----")
 
+    entities_of_interest = ["ORGANIZATION", "PERSON", "LOCATION", "CITY", "STATE_OR_PROVINCE", "COUNTRY"]
+    subjects_of_interest = objects_of_interest = None
+
+    if relation == 1:
+        entities_of_interest = ["PERSON", "ORGANIZATION"]
+        desired_relation = "per:schools_attended"
+    elif relation == 2:
+        entities_of_interest = ["PERSON", "ORGANIZATION"]
+        desired_relation = "per:employee_of"
+    elif relation == 3:
+        entities_of_interest = ["PERSON", "LOCATION", "CITY", "STATE_OR_PROVINCE", "COUNTRY"]
+        desired_relation = "per:cities_of_residence"
+    elif relation == 4:
+        entities_of_interest = ["ORGANIZATION", "PERSON"]
+        desired_relation = "org:top_members/employees"
+    if 1 <= relation <= 4:
+        subjects_of_interest = entities_of_interest[:1]
+        objects_of_interest = entities_of_interest[1:]
+
     nlp, spanbert = load_nlp_model()
 
     i = 0
     urls_seen = set()
+
     while True:
         print("\n\n=========== Iteration: {} - Query: {} ===========\n\n".format(i, query))
 
         urls = get_url_results(query, key, engine_id)
-        entities_of_interest = ["ORGANIZATION", "PERSON", "LOCATION", "CITY", "STATE_OR_PROVINCE", "COUNTRY"]
 
         for k in range(len(urls)):
             url = urls[k]
@@ -44,15 +64,12 @@ def main():
 
             urls_seen.add(url)
             text = get_content(url)
-            print(text)
-            # text = "Bill Gates stepped down as chairman of Microsoft in February 2014 and assumed a new post as technology adviser to support the newly appointed CEO Satya Nadella. Microsoft is an amazing company owned by Bill Gates."
+            doc = nlp(text)
 
-            doc = nlp(text) # TODO
-
-            relations = extract_relations(doc, spanbert, entities_of_interest, conf=target_precision) # TODO: need to make sure it only does entities that matter for the relation
+            relations = extract_relations(doc, spanbert, desired_relation, entities_of_interest=entities_of_interest, subjects_of_interest=subjects_of_interest, objects_of_interest=objects_of_interest, conf=target_precision)
+            # TODO: readme
 
             print("Relations: {}".format(dict(relations)))
-            print(doc)
 
             # get the relevant tuples with high enough predictions
             # check it against the previous ones we have
