@@ -25,6 +25,9 @@ A clear description of the internal design of your project, explaining the gener
 
 
 **External libraries: **
+requests
+from bs4 import BeautifulSoup
+re
 
 
 **Description of Step 3: **
@@ -34,8 +37,10 @@ We extracted the plain text from the webpage using the beautiful soup library in
 
 For each URL from the previous step that you have not processed before (you should skip already-seen URLs, even if this involves processing fewer than 10 webpages in this iteration):
 Retrieve the corresponding webpage; if you cannot retrieve the webpage (e.g., because of a timeout), just skip it and move on, even if this involves processing fewer than 10 webpages in this iteration.
-Extract the actual plain text from the webpage using Beautiful Soup.
-If the resulting plain text is longer than 20,000 characters, truncate the text to its first 20,000 characters (for efficiency) and discard the rest.
+
+To extract the actual plain text, we had a function called get_content in textprocessing.py. In get_content, we utilized the library beautiful soup and used a html parser as a feature. Beautiful soup pulls data out of HTML files. To get more relevant content for our program, we iterated through the data we extracted from Beautiful Soup and took out some tags such the style, script, noscript, sup, img, and cite tags. Thus, we were essentially left with the body of the html page. We also only kept alphanumeric values and took out multiple whitespaces. Lastly, we truncated the text to 20,000 characters by slicing the cleaned text. 
+
+
 Use the spaCy library to split the text into sentences and extract named entities (e.g., PERSON, ORGANIZATION). See below for details on how to perform this step.
 Use the sentences and named entity pairs as input to SpanBERT to predict the corresponding relations, and extract all instances of the relation specified by input parameter r. See below for details on how to perform this step.
 Identify the tuples that have an associated extraction confidence of at least t and add them to set X.
