@@ -65,13 +65,11 @@ def get_url_results(query, key, engine_id):
     if "items" not in res:
         return None, 0
 
-
     results = list()
     for result in res["items"]:
-        if "fileFormat" in result: # TODO: should we ignore pdf in this one too? or not?
+        if "fileFormat" in result:
             continue
 
         results.append(result["formattedUrl"])
 
-    print(results)
     return results

@@ -16,3 +16,4 @@ def get_content(url):
         return cleaned_text
     except Exception as e:
         print("\tsomething went wrong...")
+        return ""
