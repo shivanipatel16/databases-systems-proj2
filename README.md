@@ -2,14 +2,42 @@
 Aditi Dam (ad3707) and Shivani Patel (svp2128)
 
 **A list of all the files that you are submitting**
- - README.md 
- - googleapi.py
+ - README.md
+ - requirements.txt 
+ - download_finetuned.sh
  - project2.py
- - requirements.txt
+ - googleapi.py 
+ - textprocessing.py
  - spacy_help_functions.py
  - spanbert.py
- - textprocessing.py
- - download_finetuned.sh
+
+
+## Install Requirements
+First, create a conda environment running Python 3.6:
+
+```bash
+conda create --name spacyspanbert python=3.6
+conda activate spacyspanbert
+```
+
+Then, install requirements and download spacy's en_core_web_lg:
+```bash
+pip install -r requirements.txt
+python3 -m spacy download en_core_web_lg
+```
+
+## Download Pre-Trained SpanBERT (Fine-Tuned in TACRED)
+SpanBERT has the same model configuration as [BERT](https://github.com/google-research/bert) but it differs in
+both the masking scheme and the training objectives.
+
+* Architecture: 24-layer, 1024-hidden, 16-heads, 340M parameters
+* Fine-tuning Dataset: [TACRED](https://nlp.stanford.edu/projects/tacred/) ([42 relation types](https://github.com/gkaramanolakis/SpanBERT/blob/master/relations.txt))
+
+To download the fine-tuned SpanBERT model run: 
+
+```bash
+bash ./download_finetuned.sh
+```
 
 **How to run the program:**
 Commands to run: 

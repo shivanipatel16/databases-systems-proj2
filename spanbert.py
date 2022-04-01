@@ -40,6 +40,7 @@ special_tokens = {'SUBJ_START': '[unused1]', 'SUBJ_END': '[unused2]', 'OBJ_START
 # added to special_tokens since this was missing
 special_tokens['SUBJ=LOCATION'] = '[unused24]'
 
+
 class InputExample(object):
     """A single training/test example for span pair classification."""
 
