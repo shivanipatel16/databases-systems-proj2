@@ -3,12 +3,7 @@ from googleapiclient.discovery import build
 
 def valid_args(args):
     """
-    TODO: documentation
     returns whether args are valid and can process a call to the search engine
-    checks for:
-        (1) number of command line args
-        (2) target precision is a float between 0 and 1
-        (3) can successfully query first result using key and engine_id provided
     :param args: command line args as a tuple of strings
     :return: boolean True or False on whether the args given are valid or not
     """
@@ -17,13 +12,18 @@ def valid_args(args):
     if len(args) != 6:
         return False
 
-    key, engine_id, relation, target_precision, query, k = args
+    engine_key, engine_id, relation, target_precision, query, k = args
 
     try:
-        # TODO: more error checking the arguments
-        # if float(target_precision) > 1 or float(target_precision) < 0:
-        #     return False
-        r = try_connection(query, key, engine_id)
+        if float(target_precision) > 1 or float(target_precision) < 0:
+            return False
+        relation = int(relation)
+        if relation > 4 or relation < 1:
+            return False
+        k = int(k)
+        if k < 0:
+            return False
+        r = try_connection(query, engine_key, engine_id)
         return True
     except:
         return False

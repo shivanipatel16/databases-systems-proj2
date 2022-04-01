@@ -37,7 +37,7 @@ special_tokens = {'SUBJ_START': '[unused1]', 'SUBJ_END': '[unused2]', 'OBJ_START
                   'OBJ=CAUSE_OF_DEATH': '[unused17]', 'OBJ=COUNTRY': '[unused18]', 'OBJ=DURATION': '[unused19]',
                   'OBJ=STATE_OR_PROVINCE': '[unused20]', 'OBJ=LOCATION': '[unused21]',
                   'OBJ=CRIMINAL_CHARGE': '[unused22]', 'OBJ=IDEOLOGY': '[unused23]'}
-# TODO:
+# added to special_tokens since this was missing
 special_tokens['SUBJ=LOCATION'] = '[unused24]'
 
 class InputExample(object):

@@ -2,6 +2,8 @@ import spacy
 from spanbert import SpanBERT
 from collections import defaultdict
 
+# scripts adopted from https://github.com/gkaramanolakis/SpacySpanBERT
+
 spacy2bert = {
     "ORG": "ORGANIZATION",
     "PERSON": "PERSON",
@@ -20,8 +22,13 @@ bert2spacy = {
 }
 # TODO: you are allowed to modify spacy_help_functions, just make sure to mention any changes that you have made in your README.
 
-#TODO : wrote this
+
 def load_nlp_model():
+    """
+    loads a SpanBERT object with the pretrained_spanbert model
+    loads spacy with en_core_web_lg
+    :return: spanbert, nlp
+    """
     print("Loading necessary libraries; This should take a minute or so ...)")
     spanbert = SpanBERT("./pretrained_spanbert")
     nlp = spacy.load("en_core_web_lg")
@@ -33,11 +40,23 @@ def get_entities(sentence, entities_of_interest):
 
 
 def extract_relations(doc, spanbert, desired_relation, entities_of_interest=None, subjects_of_interest=None, objects_of_interest=None, conf=0.7):
+    """
+    extracts the tuples (subject, object) that have the desired relation and are above the confidence threshold
+    :param doc: spacy object with desired text that needs to be extracted from
+    :param spanbert: spanbert object
+    :param desired_relation: relation that you want to extract like per:employee_of
+    :param entities_of_interest: the type of entities that the relation needs
+    :param subjects_of_interest: the type of entities that the subject must be
+    :param objects_of_interest: the type of entities that the object must be
+    :param conf: desired confidence level
+    :return: dictionary with (subject, relation, obj) --> confidence value
+
+    """
     num_sentences = len([s for s in doc.sents])
     print("Extracted {} sentences. Processing each sentence one by one to check for presence of right pair of named entity types; if so, will run the second pipeline...".format(num_sentences))
     res = defaultdict(int)
     k = 0
-    # TODO: read modification in readme
+
     if subjects_of_interest == None:
         subjects_of_interest = entities_of_interest
     if objects_of_interest == None:
@@ -48,6 +67,7 @@ def extract_relations(doc, spanbert, desired_relation, entities_of_interest=None
     for sentence in doc.sents:
         entity_pairs = create_entity_pairs(sentence, entities_of_interest)
         examples = []
+        # modification to make sure the examples that get passed to spanbert are of the right entity type
         for ep in entity_pairs:
             if ep[1][1] in subjects_of_interest and ep[2][1] in objects_of_interest:
                 examples.append({"tokens": ep[0], "subj": ep[1], "obj": ep[2]})
@@ -87,8 +107,6 @@ def extract_relations(doc, spanbert, desired_relation, entities_of_interest=None
 
     print("Extracted annotations for {} out of total {} sentences".format(len(sentences_extracted), num_sentences))
     print("Relations extracted from this website: {} (Overall: {})".format(len(res), relations_extracted))
-    # Extracted annotations for  2  out of total  117  sentences
-	# Relations extracted from this website: 2 (Overall: 3)
 
     return res
 
