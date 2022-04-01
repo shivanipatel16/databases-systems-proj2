@@ -8,11 +8,13 @@ from spacy_help_functions import extract_relations
 
 def main():
     args = tuple(sys.argv[1:])
+    #error message if the arguments are invalid
     if not valid_args(args):
         print("Invalid arguments.")
         print("Usage: python3 retrieval.py <google api key> <google engine id> as;ldfkj;asldkfj")  # TODO
         return
 
+    #Parameters
     engine_key, engine_id, relation, target_precision, query, k = args
     target_precision = float(target_precision)
     relation = int(relation)
@@ -31,6 +33,7 @@ def main():
     entities_of_interest = ["ORGANIZATION", "PERSON", "LOCATION", "CITY", "STATE_OR_PROVINCE", "COUNTRY"]
     subjects_of_interest = objects_of_interest = desired_relation = None
 
+    #matches the desired relation with the corresponding entities of interest
     if relation == 1:
         entities_of_interest = ["PERSON", "ORGANIZATION"]
         desired_relation = "per:schools_attended"
@@ -51,7 +54,7 @@ def main():
 
     i = 1
     query_seen = {query}
-    urls_seen = set()
+    urls_seen = set() #creates a set of urls to keep track of the ones we have seen so far
     relations_tuples = dict()
 
     while query != None:
@@ -66,7 +69,7 @@ def main():
                 continue
 
             urls_seen.add(url)
-            text = get_content(url)
+            text = get_content(url) #calls the function to get the text and clean it
             doc = nlp(text)
 
             relations = extract_relations(doc, spanbert, desired_relation, entities_of_interest=entities_of_interest, subjects_of_interest=subjects_of_interest, objects_of_interest=objects_of_interest, conf=target_precision)
@@ -81,7 +84,7 @@ def main():
         sorted_relations_tuples = list(sum(sorted(relations_tuples.items(), key=lambda x:x[1], reverse=True), ()))
         rows = [[sorted_relations_tuples[k][0], sorted_relations_tuples[k][2], sorted_relations_tuples[k+1]] for k in range(0, len(sorted_relations_tuples), 2)]
         headers = ["Subject", "Object", "Confidence"]
-        print(tabulate.tabulate(rows, headers, tablefmt="fancy_grid"))
+        print(tabulate.tabulate(rows, headers, tablefmt="fancy_grid")) #prints the values in a tabular format
 
         if len(rows) <= k:
             i += 1
