@@ -22,17 +22,23 @@ pip3 install tabulate
 
 
 **Description of the internal design:**
+In our project folder, we have a README, a googleapi.py, project2.py, spacy_help_functions.py, spanbert.py, and textprocessing.py. 
+
+googleapi.py makes a call to the Google search engine api to find top 10 url results for given query. 
+
+project2.py loads the nlp model and matches the correct entities of interest with the correpsonding relation. It also calls on extract relations. 
+
+textprocessing.py gets the content from the url and cleans the text by only retrieving alphanumeric values, taking out the style, script, noscript, sup, img, and cite tags. It also removes the multiple whitespaces and trims the text to 20,000 characters. 
+
 
 
 **External libraries:**
-- requests
-- from bs4 import BeautifulSoup
-- re
-- spacy 
-- from spanbert import SpanBERT
-- from collections import defaultdict
-- sys
-- tabulate
+- requests --> makes a request to a web page
+- from bs4 import BeautifulSoup --> pulls data out of HTML files
+- re --> provides regular expression matching operations
+- spaCy --> to process and annotate text by splitting sentences and detecting entities
+- from collections import defaultdict --> returns a dictionary like object
+- tabulate --> print tabular data
 
 
 **Description of Step 3:**
