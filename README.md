@@ -54,6 +54,5 @@ textprocessing.py gets the content from the url and cleans the text by only retr
 - From this we used the sentences and named entity pairs as input to SpanBERT to predict the correct corresponding relations and extracted all instances of the specified relation. The tuples that had a confidence greater than the threshold were added to a set. 
  
 **Parameters:**
-Parameters Google Custom Search Engine JSON API Key: key = "AIzaSyAGmypTtalCS9lLgosvQiBQBIJ3FbviylU"
-
-Engine ID: id = 'e1418010197679c8b'
+- Google Custom Search Engine JSON API Key: key = "AIzaSyAGmypTtalCS9lLgosvQiBQBIJ3FbviylU"
+- Engine ID: id = 'e1418010197679c8b'
