@@ -2,7 +2,6 @@
 Aditi Dam (ad3707) and Shivani Patel (svp2128)
 
 **A list of all the files that you are submitting**
-- Zip file with: 
  - README.md 
  - googleapi.py
  - project2.py
