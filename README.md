@@ -22,8 +22,11 @@ conda activate spacyspanbert
 
 Then, install requirements and download spacy's en_core_web_lg:
 ```bash
-sudo apt update
+sudo apt-get update
 sudo apt install python3-pip
+pip3 install -U pip setuptools wheel
+pip3 install -U spacy
+python3 -m spacy download en_core_web_lg
 pip install -r requirements.txt
 python3 -m spacy download en_core_web_lg
 ```
