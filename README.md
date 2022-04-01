@@ -39,16 +39,12 @@ To download the fine-tuned SpanBERT model run:
 bash ./download_finetuned.sh
 ```
 
-**How to run the program:**
-Commands to run: 
-sudo apt update 
-sudo apt install 
-python3-pip 
-pip3 install beautifulsoup4
-pip3 install tabulate
+## How to run the program:
+Usage: python3 retrieval.py <google api key> <google engine id> <relation> <confidence threshold> <initial query <# of tuples>
+ 
+```AIzaSyAGmypTtalCS9lLgosvQiBQBIJ3FbviylU e1418010197679c8b 3 0.7 "megan repinoe redding" 2```
 
-
-**Description of the internal design:**
+## Description of the internal design:##
 In our project folder, we have a README, a googleapi.py, project2.py, spacy_help_functions.py, spanbert.py, and textprocessing.py. 
 
 googleapi.py makes a call to the Google search engine api to find top 10 url results for given query. 
@@ -59,7 +55,7 @@ textprocessing.py gets the content from the url and cleans the text by only retr
 
 
 
-**External libraries:**
+## External libraries:
 - requests --> makes a request to a web page
 - from bs4 import BeautifulSoup --> pulls data out of HTML files
 - re --> provides regular expression matching operations
@@ -68,7 +64,7 @@ textprocessing.py gets the content from the url and cleans the text by only retr
 - tabulate --> print tabular data
 
 
-**Description of Step 3:**
+## Description of Step 3:
 1) Retrieving the URLS: 
  - To retrieve the URLs, we utilized our project 1 code. We created a set of urls to keep track of the urls we already have seen. We skipped already-seen URLs by checking if it was in the set already.
 
@@ -81,6 +77,6 @@ textprocessing.py gets the content from the url and cleans the text by only retr
 4) Predicting Relations: 
 - From this we used the sentences and named entity pairs as input to SpanBERT to predict the correct corresponding relations and extracted all instances of the specified relation. The tuples that had a confidence greater than the threshold were added to a set. 
  
-**Parameters:**
+## Parameters:
 - Google Custom Search Engine JSON API Key: key = "AIzaSyAGmypTtalCS9lLgosvQiBQBIJ3FbviylU"
 - Engine ID: id = 'e1418010197679c8b'
