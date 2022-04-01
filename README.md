@@ -63,7 +63,7 @@ In our project folder, we have a README, a googleapi.py, project2.py, spacy_help
 
 **textprocessing.py** gets the content from the url and cleans the text by only retrieving alphanumeric values, taking out the style, script, noscript, sup, img, and cite tags. It also removes the multiple whitespaces and trims the text to 20,000 characters. 
 
-**helper_functions.py** [Adapted from SpacySpanBERT](hhttps://github.com/gkaramanolakis/SpacySpanBERT/blob/master/spacy_help_functions.py) Modified extract_relations() to only process (subj, object) tuples that are of the correct entity for the desired relation; drastically lowers the runtime of spanbert.predict()
+**helper_functions.py** [Adapted from SpacySpanBERT](https://github.com/gkaramanolakis/SpacySpanBERT/blob/master/spacy_help_functions.py) Modified extract_relations() to only process (subj, object) tuples that are of the correct entity for the desired relation; drastically lowers the runtime of spanbert.predict()
 
 **spanbert.py** [from SpacySpanBERT](https://github.com/gkaramanolakis/SpacySpanBERT/blob/master/README.md)
 
