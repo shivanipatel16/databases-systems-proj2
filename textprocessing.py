@@ -21,7 +21,6 @@ def get_content(url):
         cleaned_text = " ".join(text.split())
         cleaned_text = re.sub(r'[^\x00-\x7F\xA9]+', '', cleaned_text)
 
-        print(cleaned_text)
 
         print("Webpage length (num characters): {}".format(len(text)))
         if len(cleaned_text) > 20000:
