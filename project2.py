@@ -19,16 +19,6 @@ def main():
     relation = int(relation)
     k = int(k)
 
-    print("----")
-    print("Parameters:")
-    print("Client key        =", engine_key)
-    print("Engine key        =", engine_id)
-    print("Relation          =", relation)
-    print("Threshold         =", target_precision)
-    print("Query             =", query)
-    print("# of Tuples       =", k)
-    print("----")
-
     entities_of_interest = ["ORGANIZATION", "PERSON", "LOCATION", "CITY", "STATE_OR_PROVINCE", "COUNTRY"]
     subjects_of_interest = objects_of_interest = desired_relation = None
 
@@ -48,6 +38,16 @@ def main():
     if 1 <= relation <= 4:
         subjects_of_interest = entities_of_interest[:1]
         objects_of_interest = entities_of_interest[1:]
+
+    print("----")
+    print("Parameters:")
+    print("Client key        =", engine_key)
+    print("Engine key        =", engine_id)
+    print("Relation          =", desired_relation)
+    print("Threshold         =", target_precision)
+    print("Query             =", query)
+    print("# of Tuples       =", k)
+    print("----")
 
     nlp, spanbert = load_nlp_model()
 
