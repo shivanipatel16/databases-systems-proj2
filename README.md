@@ -41,6 +41,7 @@ bash ./download_finetuned.sh
 
 ## How to run the program:
 ```python3 retrieval.py {google api key} {google engine id} {relation} {confidence threshold} {initial query} {# of tuples}```
+
  {relation} is an integer from 1 to 4:
  - 1 is for Schools_Attended
  - 2 is for Work_For
