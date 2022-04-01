@@ -20,8 +20,6 @@ bert2spacy = {
     "STATE_OR_PROVINCE": "GPE",
     "DATE": "DATE"
 }
-# TODO: you are allowed to modify spacy_help_functions, just make sure to mention any changes that you have made in your README.
-
 
 def load_nlp_model():
     """
