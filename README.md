@@ -1,4 +1,4 @@
-# databases-systems-proj2
+# Information Extraction using Iterative Set Expansion
 Aditi Dam (ad3707) and Shivani Patel (svp2128)
 
 **A list of all the files that you are submitting**
