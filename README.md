@@ -1,7 +1,7 @@
 # Information Extraction using Iterative Set Expansion
-Aditi Dam (ad3707) and Shivani Patel (svp2128)
+Aditi Dam and Shivani Patel
 
-**A list of all the files that you are submitting**
+**Files**
  - README.md
  - requirements.txt 
  - download_finetuned.sh
@@ -79,9 +79,9 @@ In our project folder, we have a README, a googleapi.py, project2.py, spacy_help
 - tabulate --> print tabular data, used to print the relations extracted at each iteration
 
 
-## Description of Step 3:
+## Description of Annotation and Information Extraction Steps:
 1) Retrieving the URLS: 
- - To retrieve the URLs, we utilized our project 1 code. We created a set of urls to keep track of the urls we already have seen. We skipped already-seen URLs by checking if it was in the set already. We ignored any non-HTML websites.
+ - To retrieve the URLs, we utilized Google Custom Search API. We created a set of urls to keep track of the urls we already have seen. We skipped already-seen URLs by checking if it was in the set already. We ignored any non-HTML websites.
 
 2) Getting Content: 
 - To extract the actual plain text, we had a function called get_content in textprocessing.py. In get_content, we first did a get request to get the raw content of the website with a timeout of 20 seconds. Then, we utilized the library BeautifulSoup and used a html parser as a feature. BeautifulSoup pulls data out of HTML files. To get more relevant content for our program, we iterated through the data we extracted from BeautifulSoup and took out some tags such the style, script, noscript, sup, img, and cite tags. Thus, we were essentially left with the body of the html page. We also only kept alphanumeric values and took out multiple whitespaces. Lastly, we truncated the text to 20,000 characters by slicing the cleaned text. 
